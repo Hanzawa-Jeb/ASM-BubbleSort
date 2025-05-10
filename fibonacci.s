@@ -2,27 +2,18 @@
 .globl  fibonacci
 
 fibonacci:
-    mv      a4, a0      #move the input a0 to a4
-    beq     a4,zero,.L1 #if input = 0, jump to .L1
-    mv      a5, zero    #move zero to a5
-    addi    a5, a5, 1   #self increment 0 to 1
-    beq     a4, a5, .L1 #if input = 1, jump to .L1
-    j       .L2
+    addi    sp, sp, -48             #malloc space 48 bytes
+    sd      s0, 40(sp)              #store the initial value of s0 to the stack
+    addi    s0, sp, 48              #store the bottom of the stack in the s0 reg
+    sd      a0, -40(s0)             #store the parameter on the top of the stack
+    sd      zero, 32(sp)            #store 0 to 32(sp)
+    beq     -40(s0), 32(sp), ret1   #if == 0, jump to return 1
+    addi    32(sp), 32(sp), 1       #construct 1
+    beq     -40(s0), 0, ret1        #if == 1, jump to return 1
+    call    fibonacci               #recursively call fibonacci
+    addi    sp, sp, 48              #give back the memory space
+    ret
 
-.L1:
-    li      a0, 1       #a0 = 1
-    ret                 #return the value
-
-.L2:
-    mv      a2, a0       #move a0 to a2
-    addi    a2, a2, -1;  #self-subtract
-    mv      a0, a2       #move back to a0
-    call    fibonacci    #call the function
-    mv      a3, a0       #get the return value of the function
-    mv      a1, a2       #store the a2 to a1
-    addi    a1, a1, -1   #store initial input-1 to a1
-    mv      a0, a1       #move a1 to a0
-    call    fibonacci    #call the function
-    mv      a6, a0       #move the return value to a6
-    add     a0, a3, a6   #get the return
+ret1:
+    ld      a0, 32(sp)              #load 1 to the space
     ret
