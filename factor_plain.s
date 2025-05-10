@@ -4,6 +4,7 @@ factor:
         addi    sp,sp,-32
         sd      ra,24(sp)
         sd      s0,16(sp)
+        
         addi    s0,sp,32
         sd      a0,-24(s0)
         ld      a5,-24(s0)

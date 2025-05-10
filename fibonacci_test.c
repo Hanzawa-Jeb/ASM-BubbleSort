@@ -4,8 +4,8 @@ const int MAX_LEN = 20;
 long long fibonacci(long long n);
 
 int main() {
-  long long arr[MAX_LEN];
-  for (int i = 0; i < MAX_LEN; ++i) {
+  long long arr[20];
+  for (int i = 0; i < 20; ++i) {
     arr[i] = fibonacci(i);
   }
   if (arr[0] != 1) {
